@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "da6d6f78-e884-4206-a9b9-8f585670bdd6",
+		"name": "ProductsCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17090634"
+	},
+	"item": [
+		{
+			"name": "ListOfAllObjects",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/objects",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListOfObjectsByIds",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/objects?id=3&id=5&id=10",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3"
+						},
+						{
+							"key": "id",
+							"value": "5"
+						},
+						{
+							"key": "id",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SingleObject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the status code is 200 (OK)\r",
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to check if the response contains the 'id', 'name', and 'data' properties\r",
+							"pm.test(\"Response contains 'id', 'name', and 'data' properties\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('id');\r",
+							"    pm.expect(responseJson).to.have.property('name');\r",
+							"    pm.expect(responseJson).to.have.property('data');\r",
+							"});\r",
+							"\r",
+							"// Test to verify the 'id' is the same as the {{object_id}} environment variable\r",
+							"pm.test(\"Response 'id' matches the environment variable\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const objectId = pm.environment.get(\"object_id\");\r",
+							"    pm.expect(responseJson.id).to.equal(objectId);\r",
+							"});\r",
+							"\r",
+							"// Test to verify the 'name' matches the expected name for this object\r",
+							"pm.test(\"Response name is 'Apple MacBook Pro 16'\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.name).to.equal(\"Apple MacBook Pro 16\");\r",
+							"});\r",
+							"\r",
+							"// Test to validate the structure and content of the 'data' field\r",
+							"pm.test(\"Validate 'data' field structure\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const data = responseJson.data;\r",
+							"\r",
+							"    // Check that 'data' contains the expected fields and values\r",
+							"    pm.expect(data).to.have.property('year').that.equals(2019);\r",
+							"    pm.expect(data).to.have.property('price').that.equals(1849.99);\r",
+							"    pm.expect(data).to.have.property('CPU model').that.equals('Intel Core i9');\r",
+							"    pm.expect(data).to.have.property('Hard disk size').that.equals('1 TB');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/objects/{{object_id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects",
+						"{{object_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddObject",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Apple MacBook Pro 16\",\r\n   \"data\": {\r\n      \"year\": 2019,\r\n      \"price\": 1849.99,\r\n      \"CPU model\": \"Intel Core i9\",\r\n      \"Hard disk size\": \"1 TB\"\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/objects",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateObject",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Apple MacBook Pro 17\",\r\n   \"data\": {\r\n      \"year\": 2019,\r\n      \"price\": 2049.99,\r\n      \"CPU model\": \"Intel Core i9\",\r\n      \"Hard disk size\": \"1 TB\",\r\n      \"color\": \"silver\"\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/objects/{{object_id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects",
+						"{{object_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PartiallyUpdateObject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the status code is 200 (OK)\r",
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to verify the response contains 'id', 'name', 'updatedAt', and 'data' properties\r",
+							"pm.test(\"Response contains 'id', 'name', 'updatedAt', and 'data' properties\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('id');\r",
+							"    pm.expect(responseJson).to.have.property('name');\r",
+							"    pm.expect(responseJson).to.have.property('updatedAt');\r",
+							"    pm.expect(responseJson).to.have.property('data');\r",
+							"});\r",
+							"\r",
+							"// Test to verify that the 'id' matches the provided object ID\r",
+							"pm.test(\"Response 'id' matches the provided object ID\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const objectId = pm.environment.get(\"object_id\");  // Get the object_id from the environment\r",
+							"    pm.expect(responseJson.id).to.equal(objectId);\r",
+							"});\r",
+							"\r",
+							"// Test to verify that the 'name' has been updated to 'Apple MacBook Pro 16 (Updated Name)'\r",
+							"pm.test(\"Response 'name' is updated\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.name).to.equal(\"Apple MacBook Pro 16 (Updated Name)\");\r",
+							"});\r",
+							"\r",
+							"// Test to validate the 'data' field values after patching\r",
+							"pm.test(\"Validate 'data' field values\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const data = responseJson.data;\r",
+							"\r",
+							"    pm.expect(data).to.have.property('price').that.equals(2049.99);\r",
+							"    pm.expect(data).to.have.property('color').that.equals('silver');\r",
+							"    \r",
+							"    // Ensure 'year', 'CPU model', and 'Hard disk size' are not changed (they should be the same as before)\r",
+							"    pm.expect(data).to.have.property('year').that.equals(2019);\r",
+							"    pm.expect(data).to.have.property('CPU model').that.equals('Intel Core i9');\r",
+							"    pm.expect(data).to.have.property('Hard disk size').that.equals('1 TB');\r",
+							"});\r",
+							"\r",
+							"// Test to check if the 'updatedAt' field is present and is a valid ISO 8601 timestamp\r",
+							"pm.test(\"Response contains a valid 'updatedAt' timestamp\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const updatedAt = responseJson.updatedAt;\r",
+							"    pm.expect(updatedAt).to.be.a('string');\r",
+							"    pm.expect(updatedAt).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}\\+00:00$/);  // Check ISO 8601 format\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Apple MacBook Pro 16 (Updated Name)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/objects/{{object_id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects",
+						"{{object_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteObject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the status code is 200 (OK)\r",
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to verify that the response contains the 'message' field\r",
+							"pm.test(\"Response contains 'message' property\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('message');\r",
+							"});\r",
+							"\r",
+							"// Test to check if the response message indicates the object was deleted\r",
+							"pm.test(\"Response message confirms deletion\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const expectedMessage = `Object with id = ${pm.environment.get(\"object_id\")} has been deleted.`;\r",
+							"    pm.expect(responseJson.message).to.equal(expectedMessage);\r",
+							"});\r",
+							"\r",
+							"// Test to ensure the object ID is correctly referenced in the message\r",
+							"pm.test(\"Response message includes the correct object id\", function() {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const objectId = pm.environment.get(\"object_id\");  // Get the object_id from the environment\r",
+							"    pm.expect(responseJson.message).to.include(objectId);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{URL}}/objects/{{object_id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"objects",
+						"{{object_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
