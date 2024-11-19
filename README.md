@@ -39,7 +39,7 @@ Before running the requests, make sure to import both the collection and the env
 Download the collection and environment files from this repository.
 Open Postman.
 Click Import (located at the top-left of the Postman window).
-Select the File tab and choose the downloaded collection (my-postman-collection.json) and environment (ProductsCollection-QA.postman_environment.json) files.
+Select the File tab and choose the downloaded collection (ProductsCollection.postman_collection.json) and environment (ProductsCollection-QA.postman_environment.json) files.
 Click Import to add them to Postman.
 **Environment Variables Setup:**
 URL: (https://api.restful-api.dev).
